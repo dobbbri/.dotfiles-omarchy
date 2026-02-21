@@ -1,0 +1,14 @@
+### docker-compose
+
+## Launch Your WordPress Site
+# Navigate to your project folder in the terminal and run:
+
+docker-compose up
+
+# That’s it! Your WordPress environment is now running.
+
+
+## Remove the Containers
+# If you messed up, or you no longer want the containers you can run the following command to remove them. Note that this will delete containers and your data.
+
+docker-compose down --volumes
