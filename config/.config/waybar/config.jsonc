@@ -20,7 +20,6 @@
     // "custom/notification-silencing-indicator",
     // "custom/voxtype",
     // "custom/omarchy-theme-set",
-    // "custom/colorpicker",
     // "mpris",
     "backlight",
     "network",
@@ -30,6 +29,7 @@
     "idle_inhibitor",
     "power-profiles-daemon",
     "battery",
+    "custom/colorpicker",
     "tray",
     "clock"
   ],
@@ -104,12 +104,12 @@
   //   "interval": 5,
   //   "format": "󰔎"
   // },
-  // "custom/colorpicker": {
-  //   "on-click": "hyprpicker",
-  //   "tooltip-format": "Color Picker",
-  //   "interval": 5,
-  //   "format": "󰴱"
-  // },
+  "custom/colorpicker": {
+    "on-click": "hyprpicker",
+    "tooltip-format": "Color Picker",
+    "interval": 5,
+    "format": "󰴱"
+  },
   // "custom/weather": {
   //   "format": "{}°",
   //   "tooltip": true,
@@ -213,13 +213,13 @@
       "critical": 10
     }
   },
-  "bluetooth": {
-    "format": "",
-    "format-disabled": "󰂲",
-    "format-connected": "󰂱",
-    "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "omarchy-launch-bluetooth"
-  },
+  // "bluetooth": {
+  //   "format": "",
+  //   "format-disabled": "󰂲",
+  //   "format-connected": "󰂱",
+  //   "tooltip-format": "Devices connected: {num_connections}",
+  //   "on-click": "omarchy-launch-bluetooth"
+  // },
   "pulseaudio#input": {
     "format-source": "",
     "format-source-muted": " ",
@@ -246,23 +246,23 @@
     "on-click": "omarchy-launch-audio",
     "on-click-right": "pamixer -t"
   },
-  "mpris": {
-    "format": "󰋎  {artist} - {title}",
-    "format-paused": "<i><span color='grey'>{status_icon} {artist}</span></i>",
-    "tooltip-format": "{album}",
-    "max-length": 35,
-    "on-click": "playerctl play-pause",
-    "on-scroll-up": "playerctl previous",
-    "on-scroll-down": "playerctl next",
-    "player-icons": {
-      "default": "⏸",
-      "mpv": "🎵"
-    },
-    "status-icons": {
-      "paused": "󰋐 "
-    },
-    "ignored-players": ["firefox", "chromium", "brave"]
-  },
+  // "mpris": {
+  //   "format": "󰋎  {artist} - {title}",
+  //   "format-paused": "<i><span color='grey'>{status_icon} {artist}</span></i>",
+  //   "tooltip-format": "{album}",
+  //   "max-length": 35,
+  //   "on-click": "playerctl play-pause",
+  //   "on-scroll-up": "playerctl previous",
+  //   "on-scroll-down": "playerctl next",
+  //   "player-icons": {
+  //     "default": "⏸",
+  //     "mpv": "🎵"
+  //   },
+  //   "status-icons": {
+  //     "paused": "󰋐 "
+  //   },
+  //   "ignored-players": ["firefox", "chromium", "brave"]
+  // },
   "custom/updatespacman": {
     "format": "{}{icon}",
     "return-type": "json",

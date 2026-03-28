@@ -13,28 +13,28 @@ source ~/.local/share/omarchy/default/bash/rc
 
 
 # Correct: Appends to or correctly includes default paths
-export LUA_PATH="?;?.lua;$HOME/.luarocks/share/lua/5.5/?.lua;;"
+# export LUA_PATH="?;?.lua;$HOME/.luarocks/share/lua/5.5/?.lua;;"
+#
+# export NVM_DIR="$HOME/.config/nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#
+# # pnpm
+# export PNPM_HOME="/home/sd/.local/share/pnpm"
+# case ":$PATH:" in
+#   *":$PNPM_HOME:"*) ;;
+#   *) export PATH="$PNPM_HOME:$PATH" ;;
+# esac
+# # pnpm end
 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# pnpm
-export PNPM_HOME="/home/sd/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-
-alias pn="corepack pnpm"
-alias pnx="corepack pnpx"
-alias npm="corepack npm"
-alias npx="corepack npx"
-alias pnr="corepack pnpm run"
-alias pns="corepack pnpm start"
-
+# alias pn="corepack pnpm"
+# alias pnx="corepack pnpx"
+# alias npm="corepack npm"
+# alias npx="corepack npx"
+# alias pnr="corepack pnpm run"
+# alias pns="corepack pnpm start"
+#
 # update node packages
 alias update-pkg="pnr ncu --interactive --format group"
 
