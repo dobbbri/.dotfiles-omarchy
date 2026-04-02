@@ -106,8 +106,8 @@ mkcd() {
 neovim-update() {
   echo "- Update Neovim nighly ---------------------------------------------"
   sudo rm /usr/local/bin/nvim
-  wget https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage
-  # wget https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.appimage
+  wget https://github.com/neovim/neovim/releases/download/v0.12.0/nvim-linux-x86_64.appimage
+  # wget https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage
   chmod u+x nvim-linux-x86_64.appimage
   sudo mv nvim-linux-x86_64.appimage /usr/local/bin/nvim
 }
