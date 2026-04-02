@@ -30,17 +30,15 @@ services:
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
       WORDPRESS_DB_NAME: ${DB_NAME}
     volumes:
-d     - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       # - wordpress:/var/www/html
-      - ./wordpress:/var/www/html
+      - ./wordpress:/var/www/html:rw
+
 volumes:
   wordpress:
   db:
 
- # chmod 777 -R /var/www/html
-# sudo mkdir -p /var/www/html
-# sudo chown -R www-data:www-data /var/www/html
-# sudo chmod -R 755 /var/www/html
+ # sudo chmod -R a+rw wordpress/
 
 # Themes go in a subdirectory in /var/www/html/wp-content/themes/
 # Plugins go in a subdirectory in /var/www/html/wp-content/plugins/
