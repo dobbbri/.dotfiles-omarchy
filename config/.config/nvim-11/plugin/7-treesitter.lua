@@ -35,10 +35,10 @@ local filetypes = {
   "yaml",
   "toml",
   -- Git related
-  "git_config",
-  "git_rebase",
-  "gitcommit",
-  "gitignore",
+ --  "git_config",
+ --  "git_rebase",
+  -- "gitcommit",
+ --  "gitignore",
   -- Other utilities
   "regex",
   "vim",

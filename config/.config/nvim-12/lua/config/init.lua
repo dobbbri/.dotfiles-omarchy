@@ -1,0 +1,7 @@
+require('config.options')
+require('config.statusbar')
+require('config.pack')
+require('config.keymaps')
+require('config.diagnostics')
+require('config.autocmds')
+require('config.terminal')
