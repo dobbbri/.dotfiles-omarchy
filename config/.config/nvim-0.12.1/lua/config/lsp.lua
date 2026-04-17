@@ -80,12 +80,12 @@ vim.diagnostic.config({
 		source = "if_many",
 		prefix = "●",
 	},
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = "E",
-			[vim.diagnostic.severity.WARN] = "W",
-			[vim.diagnostic.severity.INFO] = "I",
-			[vim.diagnostic.severity.HINT] = "H",
-		},
-	},
+	-- signs = {
+	-- 	text = {
+	-- 		[vim.diagnostic.severity.ERROR] = "E",
+	-- 		[vim.diagnostic.severity.WARN] = "W",
+	-- 		[vim.diagnostic.severity.INFO] = "I",
+	-- 		[vim.diagnostic.severity.HINT] = "H",
+	-- 	},
+	-- },
 })

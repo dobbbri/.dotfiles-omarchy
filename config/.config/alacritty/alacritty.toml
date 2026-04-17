@@ -1,4 +1,4 @@
-general.import = [ "~/.config/omarchy/current/theme/alacritty.toml" ]
+# general.import = [ "~/.config/omarchy/current/theme/alacritty.toml" ]
 
 [env]
 TERM = "xterm-256color"
@@ -6,22 +6,22 @@ TERM = "xterm-256color"
 [terminal]
 osc52 = "CopyPaste"
 
-# [font]
-# builtin_box_drawing = true
-# size = 12.0
-#
-# [font.normal]
-# family = "JetBrainsMono Nerd Font"
-
 [font]
-normal = { family = "JetBrainsMono Nerd Font" }
-bold = { family = "JetBrainsMono Nerd Font" }
-italic = { family = "JetBrainsMono Nerd Font" }
-size = 11
+builtin_box_drawing = true
+size = 12.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+
+# [font]
+# normal = { family = "JetBrainsMono Nerd Font" }
+# bold = { family = "JetBrainsMono Nerd Font" }
+# italic = { family = "JetBrainsMono Nerd Font" }
+# size = 12
 
 [window]
-padding.x = 14
-padding.y = 14
+padding.x = 8
+padding.y = 4
 decorations = "None"
 
 [keyboard]
@@ -30,3 +30,33 @@ bindings = [
 { key = "Insert", mods = "Control", action = "Copy" },
 { key = "Return", mods = "Shift", chars = "\u001B\r" }
 ]
+
+
+# Colors (Gruvbox Material Hard Dark)
+
+# Default colors
+[colors.primary]
+background = '#1c1c1c'
+foreground = '#d4be98'
+
+# Normal colors
+[colors.normal]
+black   = '#32302f'
+red     = '#ea6962'
+green   = '#a9b665'
+yellow  = '#d8a657'
+blue    = '#7daea3'
+magenta = '#d3869b'
+cyan    = '#89b482'
+white   = '#d4be98'
+
+# Bright colors (same as normal colors)
+[colors.bright]
+black   = '#32302f'
+red     = '#ea6962'
+green   = '#a9b665'
+yellow  = '#d8a657'
+blue    = '#7daea3'
+magenta = '#d3869b'
+cyan    = '#89b482'
+white   = '#d4be98'

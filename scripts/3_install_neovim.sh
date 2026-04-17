@@ -1,19 +1,10 @@
 #!/bin/bash
 
-echo "- Install Neovim from image ---------------------------------------------"
-sudo rm /usr/local/bin/nvim
-wget https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage
-chmod u+x nvim-linux-x86_64.appimage
-sudo mv nvim-linux-x86_64.appimage /usr/local/bin/nvim
-
-nvim -v
-
-echo "- Install Neovim - languages --------------------------------------------"
-sudo pacman -Sy python3 go rust cargo ripgrep lua51 luarocks
-sudo pacman -Sy lua51 python-pip python3 python-pynvim
+echo "- Install Neovim and others ---------------------------------------------"
+sudo pacman -Sy neovim python3 go rust cargo ripgrep lua51 luarocks python-pip python3 python-pynvim viu chafa
 
 #pip
-pip install neovim vim-vint --break-system-packages
+# pip install neovim vim-vint --break-system-packages
 # [vim-vint]  WARNING: The script pynvim-python is installed in '/home/sd/.local/bin' which is not on PATH.
 # Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 

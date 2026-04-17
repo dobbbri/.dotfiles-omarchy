@@ -28,7 +28,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		"*.hpp",
 	},
 	callback = function(args)
-		-- avoid formatting non-file buffers (helps prevent weird write prompts)
 		if vim.bo[args.buf].buftype ~= "" then
 			return
 		end
