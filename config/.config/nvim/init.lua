@@ -3,19 +3,16 @@
 vim.g.mapleader = " " -- Set space as the leader key for custom mappings
 vim.g.maplocalleader = " " -- Set space as the local leader key for buffer-local mappings
 
--- ============================================================================
 -- Disable Built-in Plugins
 vim.g.loaded_netrw = 1 -- Disable netrw file explorer (using a different file explorer)
 vim.g.loaded_netrwPlugin = 1 -- Disable netrw plugin component
 
--- ============================================================================
 -- Disable Providers (silence health check warnings)
 vim.g.loaded_node_provider = 0 -- Disable Node.js provider
 vim.g.loaded_perl_provider = 0 -- Disable Perl provider
 vim.g.loaded_python3_provider = 0 -- Disable Python 3 provider
 vim.g.loaded_ruby_provider = 0 -- Disable Ruby provider
 
--- ============================================================================
 -- Editor Behavior
 vim.opt.mouse = "a" -- Enable mouse support in all modes
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard for all yank/paste operations
@@ -26,7 +23,6 @@ vim.opt.timeoutlen = 1000 -- Time in ms to wait for a mapped key sequence to com
 vim.opt.confirm = true -- Prompt for confirmation instead of failing on unsaved changes
 vim.opt.autoread = true -- Automatically reload files changed outside of Neovim
 
--- ============================================================================
 -- UI/Display
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors in the terminal
 vim.opt.number = true -- Show absolute line numbers
@@ -47,43 +43,34 @@ vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 vim.opt.fillchars = { eob = "-" } -- Hide ~ characters on empty lines
 
--- ============================================================================
 -- Search
--- ============================================================================
 vim.opt.hlsearch = true -- Highlight all search matches
 vim.opt.incsearch = true -- Show search matches as you type
 vim.opt.ignorecase = true -- Ignore case in search patterns
 vim.opt.smartcase = true -- Override ignorecase if pattern contains uppercase
 
--- ============================================================================
 -- Indentation
--- ============================================================================
 vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.tabstop = 2 -- Number of spaces tabs count for
 vim.opt.shiftwidth = 2 -- Number of spaces for each indentation level
 vim.opt.smartindent = true -- Auto-indent new lines based on syntax
 
--- ============================================================================
 -- Splits
--- ============================================================================
 vim.opt.splitbelow = true -- Open horizontal splits below current window
 vim.opt.splitright = true -- Open vertical splits to the right of current window
 
--- ============================================================================
 -- Files
--- ============================================================================
 vim.opt.fileencoding = "utf-8" -- File encoding for new files
 vim.opt.backup = false -- Don't create backup files before overwriting
 vim.opt.writebackup = false -- Don't create backup while editing
 vim.opt.swapfile = false -- Don't create swap files
 
--- ============================================================================
 -- Completion
--- ============================================================================
 vim.opt.completeopt = { "menu", "menuone", "noselect" } -- Completion menu options
 vim.opt.conceallevel = 0 -- Show all text normally (no concealment)
 
--- ============================================================================
+-- disable enter
+require("vim._core.ui2").enable()
 
 -- =============================================================================
 -- go to last loc when opening a buffer
@@ -101,16 +88,14 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 -- Configure how diagnostics are displayed
 vim.diagnostic.config({
 	virtual_text = { prefix = "●", spacing = 4 },
-	signs = true,
-	underline = true,
-	update_in_insert = false,
-	severity_sort = true,
-	float = {
-		border = "rounded",
-		header = "",
-		prefix = "",
-		focusable = false,
-		style = "minimal",
+	float = { focusable = true, style = "minimal" },
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN] = "",
+			[vim.diagnostic.severity.INFO] = "",
+			[vim.diagnostic.severity.HINT] = "",
+		},
 	},
 })
 
@@ -142,8 +127,22 @@ vim.pack.add({
 vim.cmd("colorscheme retrobox")
 
 -- =============================================================================
+-- cheatsheet
+local wk = require("which-key")
+wk.setup()
+
+wk.add({
+	{ "<leader>d", group = "Diagnostics" },
+	{ "<leader>dl", vim.diagnostic.setloclist, desc = "List Diagnostics" },
+	{ "<leader>df", vim.diagnostic.open_float, desc = "Float Error" },
+	{ "[d", vim.diagnostic.jump({ count = -1 }), desc = "Previous Diagnostic" },
+	{ "]d", vim.diagnostic.jump({ count = 1 }), desc = "Next Diagnostic" },
+})
+
+-- =============================================================================
 -- statusline
-require("witch-line").setup()
+require("witch-line").setup({})
+vim.api.nvim_set_hl(0, "Statusline", { bg = "#111111" })
 
 -- =============================================================================
 -- autocomplete
@@ -234,10 +233,6 @@ require("conform").setup({
 	},
 })
 
--- =============================================================================
--- cheatsheet
-local wk = require("which-key")
-wk.setup()
 wk.add({
 	{
 		"<leader>cf",
@@ -280,47 +275,21 @@ wk.add({
 -- git
 require("gitsigns").setup({
 	signs = {
-		delete = { text = "┃" },
-		topdelete = { text = "┃" },
-		changedelete = { text = "┃" },
+		add = { text = "│" },
+		change = { text = "│" },
+		delete = { text = "│" },
+		topdelete = { text = "│" },
+		changedelete = { text = "│" },
+		untracked = { text = "┆" },
 	},
-	on_attach = function()
-		local gs = package.loaded.gitsigns
-
-		wk.add({
-			{ "<leader>g", group = "Git" },
-			{ "<leader>gs", gs.stage_hunk, desc = "Stage Hunk" },
-			{ "<leader>gr", gs.reset_hunk, desc = "Reset Hunk" },
-			{ "<leader>gp", gs.preview_hunk, desc = "Preview Hunk" },
-			{
-				"<leader>gb",
-				function()
-					gs.blame_line({ full = true })
-				end,
-				desc = "Blame Line",
-			},
-		})
-	end,
 })
 
 wk.add({
-	{
-		"[d",
-		function()
-			vim.diagnostic.jump({ count = -1, float = true })
-		end,
-		desc = "Previous Diagnostic",
-	},
-	{
-		"]d",
-		function()
-			vim.diagnostic.jump({ count = 1, float = true })
-		end,
-		desc = "Next Diagnostic",
-	},
-	{ "<leader>d", group = "Diagnostics" },
-	{ "<leader>dl", vim.diagnostic.setloclist, desc = "List Diagnostics" },
-	{ "<leader>df", vim.diagnostic.open_float, desc = "Float Error" },
+	{ "<leader>g", group = "Git" },
+	{ "<leader>gs", "<CMD>Gitsigns stage_hunk<CR>", desc = "Stage Hunk" },
+	{ "<leader>gr", "<CMD>Gitsigns reset_hunk<CR>", desc = "Reset Hunk" },
+	{ "<leader>gp", "<CMD>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" },
+	{ "<leader>gb", "<CMD>Gitsigns blame_line --full'<CR>", desc = "Blame Line" },
 })
 
 require("nvim-treesitter.config").setup({
@@ -410,8 +379,11 @@ wk.add({
 	},
 })
 
+-- ===========================================================================
+-- keymaps
+
 -- Close current buffer without closing the window
-vim.keymap.set("n", "<leader>q", "<CMD>bdelete<CR>", { desc = "Close Buffer" })
+vim.keymap.set("n", "<leader>x", "<CMD>bdelete<CR>", { desc = "Close Buffer" })
 vim.keymap.set("n", "<leader>?", "<CMD>WhichKey<CR>", { desc = "Show all keymaps" })
 
 -- Save
@@ -425,10 +397,7 @@ vim.keymap.set("n", "<leader>Q", "<cmd>qa<cr>", { desc = "Quit All" })
 -- Clear search highlight
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear Highlight", silent = true })
 
--- ════════════════════════════════════════════════════════════════════════════
 -- Window Navigation (no prefix for speed)
--- ════════════════════════════════════════════════════════════════════════════
-
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go Left" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go Down" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go Up" })
@@ -440,17 +409,11 @@ vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Height"
 vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Width" })
 vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Width" })
 
--- ════════════════════════════════════════════════════════════════════════════
 -- Line Movement (Visual Mode)
--- ════════════════════════════════════════════════════════════════════════════
-
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Lines Down" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Lines Up" })
 
--- ════════════════════════════════════════════════════════════════════════════
 -- Better Navigation
--- ════════════════════════════════════════════════════════════════════════════
-
 -- Wrapped line navigation
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, desc = "Up (wrapped)" })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, desc = "Down (wrapped)" })
@@ -471,10 +434,7 @@ vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 
--- ════════════════════════════════════════════════════════════════════════════
 -- Better Editing
--- ════════════════════════════════════════════════════════════════════════════
-
 -- Better indenting (stay in visual mode)
 vim.keymap.set("v", "<", "<gv", { desc = "Indent Left" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent Right" })
@@ -496,17 +456,11 @@ vim.keymap.set(
 -- Select all
 vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select All" })
 
--- ════════════════════════════════════════════════════════════════════════════
 -- Insert Mode Escapes
--- ════════════════════════════════════════════════════════════════════════════
-
 vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit Insert" })
 vim.keymap.set("i", "jk", "<Esc>", { desc = "Exit Insert" })
 
--- ════════════════════════════════════════════════════════════════════════════
 -- Terminal Mode
--- ════════════════════════════════════════════════════════════════════════════
-
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
 vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go Left" })
 vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go Down" })
