@@ -1,38 +1,121 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.signcolumn = "yes"
-vim.opt.termguicolors = true -- Enable 24-bit RGB colors
-vim.opt.cursorline = true -- Highlight the current line
-vim.opt.laststatus = 3 -- Global statusline (looks cleaner with one bar at the bottom)
-vim.opt.showmode = false -- Don't show -- INSERT -- (Which-key/Statusline handle this)
--- Better Editing
-vim.opt.expandtab = true -- Use spaces instead of tabs
-vim.opt.shiftwidth = 2 -- Size of an indent
-vim.opt.tabstop = 2 -- Number of spaces tabs count for
-vim.opt.smartindent = true -- Insert indents automatically
-vim.opt.ignorecase = true -- Ignore case in search...
-vim.opt.smartcase = true -- ...unless search contains a capital letter
-vim.opt.clipboard = "unnamedplus"
--- Performance & Behavior
-vim.opt.updatetime = 250 -- Faster completion and diagnostic display
-vim.opt.timeoutlen = 300 -- Faster Which-key popup
-vim.opt.splitright = true -- Vertical splits open to the right
-vim.opt.splitbelow = true
+-- ============================================================================
+-- Leader Keys
+vim.g.mapleader = " " -- Set space as the leader key for custom mappings
+vim.g.maplocalleader = " " -- Set space as the local leader key for buffer-local mappings
 
--- Configure how diagnostics are displayed
-vim.diagnostic.config({
-	virtual_text = {	prefix = "●", spacing = 4 },
-	signs = true,
-	underline = true,
-	update_in_insert = false, 
-	severity_sort = true,
-	-- float = {
-	-- 	border = "rounded", 
-	-- },
+-- ============================================================================
+-- Disable Built-in Plugins
+vim.g.loaded_netrw = 1 -- Disable netrw file explorer (using a different file explorer)
+vim.g.loaded_netrwPlugin = 1 -- Disable netrw plugin component
+
+-- ============================================================================
+-- Disable Providers (silence health check warnings)
+vim.g.loaded_node_provider = 0 -- Disable Node.js provider
+vim.g.loaded_perl_provider = 0 -- Disable Perl provider
+vim.g.loaded_python3_provider = 0 -- Disable Python 3 provider
+vim.g.loaded_ruby_provider = 0 -- Disable Ruby provider
+
+-- ============================================================================
+-- Editor Behavior
+vim.opt.mouse = "a" -- Enable mouse support in all modes
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard for all yank/paste operations
+vim.opt.undofile = true -- Persist undo history to disk between sessions
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undo" -- Directory to store undo files
+vim.opt.updatetime = 100 -- Time in ms before CursorHold event triggers (affects plugins)
+vim.opt.timeoutlen = 1000 -- Time in ms to wait for a mapped key sequence to complete
+vim.opt.confirm = true -- Prompt for confirmation instead of failing on unsaved changes
+vim.opt.autoread = true -- Automatically reload files changed outside of Neovim
+
+-- ============================================================================
+-- UI/Display
+vim.opt.termguicolors = true -- Enable 24-bit RGB colors in the terminal
+vim.opt.number = true -- Show absolute line numbers
+vim.opt.relativenumber = true -- Show relative line numbers (hybrid with number=true)
+vim.opt.numberwidth = 3 -- Minimum width of number column
+vim.opt.signcolumn = "yes:1" -- Always show sign column with width of 1
+vim.opt.cursorline = false -- Don't highlight the current line
+vim.opt.wrap = false -- Don't wrap long lines
+vim.opt.breakindent = false -- Wrapped lines preserve indentation
+vim.opt.showmode = false -- Don't show mode in command line (shown in statusline)
+vim.opt.showcmd = false -- Don't show partial command in command line
+vim.opt.ruler = true -- Show cursor position in command line
+vim.opt.showtabline = 0 -- Never show the tab line
+vim.opt.cmdheight = 1 -- Height of command line area
+vim.opt.pumheight = 10 -- Maximum height of popup menu
+vim.o.winborder = "none" -- Use rounded borders for floating windows
+vim.opt.list = true
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.fillchars = { eob = "-" } -- Hide ~ characters on empty lines
+
+-- ============================================================================
+-- Search
+-- ============================================================================
+vim.opt.hlsearch = true -- Highlight all search matches
+vim.opt.incsearch = true -- Show search matches as you type
+vim.opt.ignorecase = true -- Ignore case in search patterns
+vim.opt.smartcase = true -- Override ignorecase if pattern contains uppercase
+
+-- ============================================================================
+-- Indentation
+-- ============================================================================
+vim.opt.expandtab = true -- Convert tabs to spaces
+vim.opt.tabstop = 2 -- Number of spaces tabs count for
+vim.opt.shiftwidth = 2 -- Number of spaces for each indentation level
+vim.opt.smartindent = true -- Auto-indent new lines based on syntax
+
+-- ============================================================================
+-- Splits
+-- ============================================================================
+vim.opt.splitbelow = true -- Open horizontal splits below current window
+vim.opt.splitright = true -- Open vertical splits to the right of current window
+
+-- ============================================================================
+-- Files
+-- ============================================================================
+vim.opt.fileencoding = "utf-8" -- File encoding for new files
+vim.opt.backup = false -- Don't create backup files before overwriting
+vim.opt.writebackup = false -- Don't create backup while editing
+vim.opt.swapfile = false -- Don't create swap files
+
+-- ============================================================================
+-- Completion
+-- ============================================================================
+vim.opt.completeopt = { "menu", "menuone", "noselect" } -- Completion menu options
+vim.opt.conceallevel = 0 -- Show all text normally (no concealment)
+
+-- ============================================================================
+
+-- =============================================================================
+-- go to last loc when opening a buffer
+vim.api.nvim_create_autocmd("BufReadPost", {
+	callback = function()
+		local mark = vim.api.nvim_buf_get_mark(0, '"')
+		local lcount = vim.api.nvim_buf_line_count(0)
+		if mark[1] > 0 and mark[1] <= lcount then
+			pcall(vim.api.nvim_win_set_cursor, 0, mark)
+		end
+	end,
 })
 
+-- =============================================================================
+-- Configure how diagnostics are displayed
+vim.diagnostic.config({
+	virtual_text = { prefix = "●", spacing = 4 },
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+	float = {
+		border = "rounded",
+		header = "",
+		prefix = "",
+		focusable = false,
+		style = "minimal",
+	},
+})
+
+-- =============================================================================
+-- packages
 vim.pack.add({
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/neovim/nvim-lspconfig",
@@ -50,37 +133,31 @@ vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/windwp/nvim-ts-autotag",
 	"https://github.com/windwp/nvim-autopairs",
+	"https://github.com/MagicDuck/grug-far.nvim",
 	"https://github.com/lukas-reineke/indent-blankline.nvim",
 })
 
+-- =============================================================================
+-- colorscheme
 vim.cmd("colorscheme retrobox")
 
-local wk = require("which-key")
-wk.setup({
-	preset = "modern",
-	-- win = { border = "single" },
-})
+-- =============================================================================
+-- statusline
+require("witch-line").setup()
 
-require("witch-line").setup({})
-
-
+-- =============================================================================
+-- autocomplete
 require("blink.cmp").setup({
 	fuzzy = {
 		implementation = "prefer_rust",
 		prebuilt_binaries = { force_version = "v*", download = true },
 	},
 	signature = { enabled = true },
-	sources = {
-		default = { "lsp", "path", "snippets", "buffer" },
-	},
+	sources = { default = { "lsp", "path", "snippets", "buffer" } },
 	completion = {
 		documentation = { auto_show = true },
-		menu = {
-			auto_show = true,
-		},
-		list = {
-			selection = { preselect = true, auto_insert = false },
-		},
+		menu = { auto_show = true },
+		list = { selection = { preselect = true, auto_insert = false } },
 	},
 	keymap = {
 		["<CR>"] = { "accept", "fallback" },
@@ -89,6 +166,8 @@ require("blink.cmp").setup({
 	},
 })
 
+-- =============================================================================
+-- LSP
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
@@ -112,21 +191,15 @@ require("mason-tool-installer").setup({
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
-			runtime = {
-				version = "LuaJIT",
-			},
-			diagnostics = {
-				globals = {
-					"vim",
-					"require",
-				},
-			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
+			runtime = { version = "LuaJIT" },
+			diagnostics = { globals = { "vim" } },
+			workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
+			telemetry = { enable = false },
 		},
 	},
 })
+
+vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
 
 vim.lsp.enable({
 	"astro",
@@ -138,8 +211,8 @@ vim.lsp.enable({
 	"dockerls",
 })
 
-vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
-
+-- =============================================================================
+-- format
 require("conform").setup({
 	formatters_by_ft = {
 		sh = { "shfmt" },
@@ -161,6 +234,10 @@ require("conform").setup({
 	},
 })
 
+-- =============================================================================
+-- cheatsheet
+local wk = require("which-key")
+wk.setup()
 wk.add({
 	{
 		"<leader>cf",
@@ -171,12 +248,17 @@ wk.add({
 	},
 })
 
+-- =============================================================================
+-- file explorer
 require("oil").setup({
 	default_file_explorer = true,
 	delete_to_trash = true,
 	skip_confirm_for_simple_edits = true,
 	view_options = {
-		show_hidden = true, -- Always see .dotfiles
+		show_hidden = true,
+		is_always_hidden = function(name, _)
+			return name == ".git/"
+		end,
 	},
 	keymaps = {
 		["<ESC>"] = "actions.close",
@@ -186,26 +268,22 @@ require("oil").setup({
 
 wk.add({
 	{ "-", "<CMD>Oil<CR>", desc = "Edit Files (Oil)" },
+})
+
+wk.add({
 	{ "<leader>f", group = "Find" }, -- Grouping for your fzf-lua
 	{ "<leader>ff", "<CMD>FzfLua files<CR>", desc = "Find Files" },
 	{ "<leader>fg", "<CMD>FzfLua live_grep<CR>", desc = "Grep Text" },
-	{ "<leader>q", desc = "Quit Buffer" },
 })
 
--- Close current buffer without closing the window
-vim.keymap.set("n", "<leader>q", "<CMD>bdelete<CR>", { desc = "Close Buffer" })
-vim.keymap.set("n", "<leader>?", "<CMD>WhichKey<CR>", { desc = "Show all keymaps" })
-
+-- =============================================================================
+-- git
 require("gitsigns").setup({
 	signs = {
-		add = { text = "┃" },
-		change = { text = "┃" },
-		delete = { text = "_" },
-		topdelete = { text = "‾" },
-		changedelete = { text = "~" },
-		untracked = { text = "┆" },
+		delete = { text = "┃" },
+		topdelete = { text = "┃" },
+		changedelete = { text = "┃" },
 	},
-	-- Integrate with Which-key for easy Git actions
 	on_attach = function()
 		local gs = package.loaded.gitsigns
 
@@ -268,6 +346,8 @@ require("nvim-treesitter.config").setup({
 	autotag = { enable = true },
 })
 
+-- ===========================================================================
+--
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "<filetype>" },
 	callback = function()
@@ -275,8 +355,12 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- ===========================================================================
+--
 require("nvim-ts-autotag").setup({})
 
+-- ===========================================================================
+--
 wk.add({
 	{ "<leader>c", group = "Code" },
 	{ "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" } },
@@ -286,22 +370,145 @@ wk.add({
 	{ "K", vim.lsp.buf.hover, desc = "Hover Docs" },
 })
 
-local autopairs = require("nvim-autopairs")
-autopairs.setup({
+-- ===========================================================================
+--
+require("nvim-autopairs").setup({
 	check_ts = true,
 	fast_wrap = {},
 })
 
+-- ===========================================================================
+--
 require("ibl").setup({
 	indent = {
 		char = "│",
 		tab_char = "│",
 		highlight = "IblIndent",
 	},
-	scope = {
-		enabled = true,
-		show_start = false,
-		show_end = false,
-		highlight = "IblScope",
+})
+
+-- ===========================================================================
+-- Searc and replace in project files
+require("grug-far").setup({
+	headerMaxWidth = 80,
+	showCompactInputs = true,
+})
+
+wk.add({
+	{ "<leader>r", group = "Replace" },
+	{
+		"<leader>ra",
+		function()
+			local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+			require("grug-far").open({
+				transient = true,
+				prefills = { filesFilter = ext and ext ~= "" and "*." .. ext or nil },
+			})
+		end,
+		desc = "Replace in projec",
+		mode = { "n", "v" },
 	},
 })
+
+-- Close current buffer without closing the window
+vim.keymap.set("n", "<leader>q", "<CMD>bdelete<CR>", { desc = "Close Buffer" })
+vim.keymap.set("n", "<leader>?", "<CMD>WhichKey<CR>", { desc = "Show all keymaps" })
+
+-- Save
+vim.keymap.set("n", "<C-s>", "<cmd>w<cr>", { desc = "Save File" })
+vim.keymap.set({ "i", "x" }, "<C-s>", "<Esc><cmd>w<cr>", { desc = "Save File" })
+
+-- Quit
+vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>Q", "<cmd>qa<cr>", { desc = "Quit All" })
+
+-- Clear search highlight
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear Highlight", silent = true })
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- Window Navigation (no prefix for speed)
+-- ════════════════════════════════════════════════════════════════════════════
+
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go Left" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go Down" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go Up" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go Right" })
+
+-- Window resizing
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Height" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Height" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Width" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Width" })
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- Line Movement (Visual Mode)
+-- ════════════════════════════════════════════════════════════════════════════
+
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Lines Down" })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Lines Up" })
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- Better Navigation
+-- ════════════════════════════════════════════════════════════════════════════
+
+-- Wrapped line navigation
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, desc = "Up (wrapped)" })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, desc = "Down (wrapped)" })
+
+-- Start/End of line (easier than ^ and $)
+vim.keymap.set({ "n", "x", "o" }, "H", "^", { desc = "Start of Line" })
+vim.keymap.set({ "n", "x", "o" }, "L", "g_", { desc = "End of Line" })
+
+-- Keep search results centered
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next Match (centered)" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Prev Match (centered)" })
+vim.keymap.set("n", "*", "*zzzv", { desc = "Search Word (centered)" })
+vim.keymap.set("n", "#", "#zzzv", { desc = "Search Word Back (centered)" })
+
+-- Buffer navigation
+vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- Better Editing
+-- ════════════════════════════════════════════════════════════════════════════
+
+-- Better indenting (stay in visual mode)
+vim.keymap.set("v", "<", "<gv", { desc = "Indent Left" })
+vim.keymap.set("v", ">", ">gv", { desc = "Indent Right" })
+
+-- Paste over selection without yanking
+vim.keymap.set("v", "p", '"_dP', { desc = "Paste (no yank)" })
+
+-- Yank block
+vim.keymap.set("n", "YY", "va{Vy", { desc = "Yank Block {}" })
+
+-- Split line (opposite of J)
+vim.keymap.set(
+	"n",
+	"X",
+	":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==^<cr>",
+	{ desc = "Split Line", silent = true }
+)
+
+-- Select all
+vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select All" })
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- Insert Mode Escapes
+-- ════════════════════════════════════════════════════════════════════════════
+
+vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit Insert" })
+vim.keymap.set("i", "jk", "<Esc>", { desc = "Exit Insert" })
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- Terminal Mode
+-- ════════════════════════════════════════════════════════════════════════════
+
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
+vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go Left" })
+vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go Down" })
+vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go Up" })
+vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go Right" })

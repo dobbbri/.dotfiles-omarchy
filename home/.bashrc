@@ -40,7 +40,7 @@ alias update-pkg="pnr ncu --interactive --format group"
 
 # dotfiles
 alias ff='cd ~/.dotfiles-omarchy/'
-alias vv='cd ~/.dotfiles-omarchy/vimbtw/.config/nvim/'
+alias vv='cd ~/.dotfiles-omarchy/config/.config/nvim/'
 
 # run http-server
 alias run-server="pnx http-server "
