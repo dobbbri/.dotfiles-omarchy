@@ -111,6 +111,7 @@ vim.pack.add({
   "https://github.com/windwp/nvim-autopairs",
   "https://github.com/MagicDuck/grug-far.nvim",
   "https://github.com/lukas-reineke/indent-blankline.nvim",
+  "https://github.com/3rd/image.nvim"
 })
 
 -- =============================================================================
@@ -118,6 +119,14 @@ vim.pack.add({
 vim.cmd("colorscheme catppuccin")
 -- vim.cmd("colorscheme retrobox")
 -- vim.cmd("colorscheme unokai")
+
+
+
+-- =============================================================================
+-- image
+require("image").setup({
+  backend = "kitty"
+})
 
 -- =============================================================================
 -- cheatsheet
