@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "- Install Neovim and others ---------------------------------------------"
-sudo pacman -Sy neovim python3 go rust cargo ripgrep lua51 luarocks python-pip python3 python-pynvim viu chafa
+sudo pacman -Sy neovim python3 go rust cargo ripgrep lua51 luarocks python-pip python3 python-pynvim viu chafa ueberzugpp
 
 #pip
 # pip install neovim vim-vint --break-system-packages

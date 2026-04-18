@@ -27,7 +27,7 @@ vim.opt.autoread = true -- Automatically reload files changed outside of Neovim
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors in the terminal
 vim.opt.number = true -- Show absolute line numbers
 vim.opt.relativenumber = true -- Show relative line numbers (hybrid with number=true)
-vim.opt.numberwidth = 3 -- Minimum width of number column
+vim.opt.numberwidth = 2 -- Minimum width of number column
 vim.opt.signcolumn = "yes:1" -- Always show sign column with width of 1
 vim.opt.cursorline = false -- Don't highlight the current line
 vim.opt.wrap = false -- Don't wrap long lines
@@ -75,56 +75,49 @@ require("vim._core.ui2").enable()
 -- =============================================================================
 -- go to last loc when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
-	callback = function()
-		local mark = vim.api.nvim_buf_get_mark(0, '"')
-		local lcount = vim.api.nvim_buf_line_count(0)
-		if mark[1] > 0 and mark[1] <= lcount then
-			pcall(vim.api.nvim_win_set_cursor, 0, mark)
-		end
-	end,
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
 })
 
 -- =============================================================================
 -- Configure how diagnostics are displayed
 vim.diagnostic.config({
-	virtual_text = { prefix = "●", spacing = 4 },
-	float = { focusable = true, style = "minimal" },
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = "",
-			[vim.diagnostic.severity.WARN] = "",
-			[vim.diagnostic.severity.INFO] = "",
-			[vim.diagnostic.severity.HINT] = "",
-		},
-	},
+  virtual_text = { prefix = "●", spacing = 6 },
+  float = { focusable = true, style = "minimal" },
 })
 
 -- =============================================================================
 -- packages
 vim.pack.add({
-	"https://github.com/nvim-tree/nvim-web-devicons",
-	"https://github.com/neovim/nvim-lspconfig",
-	"https://github.com/mason-org/mason.nvim",
-	"https://github.com/mason-org/mason-lspconfig.nvim",
-	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
-	"https://github.com/sontungexpt/witch-line",
-	"https://github.com/rafamadriz/friendly-snippets",
-	"https://github.com/saghen/blink.cmp",
-	"https://github.com/stevearc/conform.nvim",
-	"https://github.com/stevearc/oil.nvim",
-	"https://github.com/ibhagwan/fzf-lua",
-	"https://github.com/folke/which-key.nvim",
-	"https://github.com/lewis6991/gitsigns.nvim",
-	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/windwp/nvim-ts-autotag",
-	"https://github.com/windwp/nvim-autopairs",
-	"https://github.com/MagicDuck/grug-far.nvim",
-	"https://github.com/lukas-reineke/indent-blankline.nvim",
+  "https://github.com/nvim-tree/nvim-web-devicons",
+  "https://github.com/neovim/nvim-lspconfig",
+  "https://github.com/mason-org/mason.nvim",
+  "https://github.com/mason-org/mason-lspconfig.nvim",
+  "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
+  "https://github.com/rafamadriz/friendly-snippets",
+  "https://github.com/saghen/blink.cmp",
+  "https://github.com/stevearc/conform.nvim",
+  "https://github.com/stevearc/oil.nvim",
+  "https://github.com/ibhagwan/fzf-lua",
+  "https://github.com/folke/which-key.nvim",
+  "https://github.com/lewis6991/gitsigns.nvim",
+  "https://github.com/nvim-treesitter/nvim-treesitter",
+  "https://github.com/windwp/nvim-ts-autotag",
+  "https://github.com/windwp/nvim-autopairs",
+  "https://github.com/MagicDuck/grug-far.nvim",
+  "https://github.com/lukas-reineke/indent-blankline.nvim",
 })
 
 -- =============================================================================
 -- colorscheme
-vim.cmd("colorscheme retrobox")
+vim.cmd("colorscheme catppuccin")
+-- vim.cmd("colorscheme retrobox")
+-- vim.cmd("colorscheme unokai")
 
 -- =============================================================================
 -- cheatsheet
@@ -132,37 +125,30 @@ local wk = require("which-key")
 wk.setup()
 
 wk.add({
-	{ "<leader>d", group = "Diagnostics" },
-	{ "<leader>dl", vim.diagnostic.setloclist, desc = "List Diagnostics" },
-	{ "<leader>df", vim.diagnostic.open_float, desc = "Float Error" },
-	{ "[d", vim.diagnostic.jump({ count = -1 }), desc = "Previous Diagnostic" },
-	{ "]d", vim.diagnostic.jump({ count = 1 }), desc = "Next Diagnostic" },
+  { "<leader>d", group = "Diagnostics" },
+  { "<leader>dl", vim.diagnostic.setloclist, desc = "List Diagnostics" },
+  { "<leader>df", vim.diagnostic.open_float, desc = "Float Error" },
 })
-
--- =============================================================================
--- statusline
-require("witch-line").setup({})
-vim.api.nvim_set_hl(0, "Statusline", { bg = "#111111" })
 
 -- =============================================================================
 -- autocomplete
 require("blink.cmp").setup({
-	fuzzy = {
-		implementation = "prefer_rust",
-		prebuilt_binaries = { force_version = "v*", download = true },
-	},
-	signature = { enabled = true },
-	sources = { default = { "lsp", "path", "snippets", "buffer" } },
-	completion = {
-		documentation = { auto_show = true },
-		menu = { auto_show = true },
-		list = { selection = { preselect = true, auto_insert = false } },
-	},
-	keymap = {
-		["<CR>"] = { "accept", "fallback" },
-		["<Tab>"] = { "select_next", "fallback" },
-		["<S-Tab>"] = { "select_prev", "fallback" },
-	},
+  fuzzy = {
+    implementation = "prefer_rust",
+    prebuilt_binaries = { force_version = "v*", download = true },
+  },
+  signature = { enabled = true },
+  sources = { default = { "lsp", "path", "snippets", "buffer" } },
+  completion = {
+    documentation = { auto_show = true },
+    menu = { auto_show = true },
+    list = { selection = { preselect = true, auto_insert = false } },
+  },
+  keymap = {
+    ["<CR>"] = { "accept", "fallback" },
+    ["<Tab>"] = { "select_next", "fallback" },
+    ["<S-Tab>"] = { "select_prev", "fallback" },
+  },
 })
 
 -- =============================================================================
@@ -170,158 +156,127 @@ require("blink.cmp").setup({
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
-	ensure_installed = {
-		"astro-language-server",
-		"bash-language-server",
-		"json-lsp",
-		"biome",
-		"prettier",
-		"shfmt",
-		"stylua",
-		"taplo",
-		"tailwindcss-language-server",
-		"lua-language-server",
-		"typescript-language-server",
-		"yamlfmt",
-		"dockerls",
-	},
+  ensure_installed = {
+    "astro-language-server",
+    "bash-language-server",
+    "json-lsp",
+    "biome",
+    "prettier",
+    "shfmt",
+    "stylua",
+    "taplo",
+    "tailwindcss-language-server",
+    "lua-language-server",
+    "typescript-language-server",
+    "yamlfmt",
+    "dockerls",
+  },
 })
 
 vim.lsp.config("lua_ls", {
-	settings = {
-		Lua = {
-			runtime = { version = "LuaJIT" },
-			diagnostics = { globals = { "vim" } },
-			workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
-			telemetry = { enable = false },
-		},
-	},
+  settings = {
+    Lua = { diagnostics = { globals = { "vim" } }, telemetry = { enable = false } },
+  },
 })
 
 vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
 
-vim.lsp.enable({
-	"astro",
-	"bashls",
-	"jsonls",
-	"lua_ls",
-	"tailwindcss",
-	"ts_ls",
-	"dockerls",
-})
+vim.lsp.enable({ "astro", "bashls", "jsonls", "lua_ls", "tailwindcss", "ts_ls", "dockerls" })
 
 -- =============================================================================
 -- format
 require("conform").setup({
-	formatters_by_ft = {
-		sh = { "shfmt" },
-		lua = { "stylua" },
-		toml = { "taplo" },
-		yaml = { "yamlfmt" },
-		yml = { "yamlfmt" },
-		astro = { "biome" },
-		javascript = { "biome" },
-		javascriptreact = { "biome" },
-		typescript = { "biome" },
-		typescriptreact = { "biome" },
-		css = { "biome" },
-		html = { "biome" },
-		json = { "biome" },
-		jsonc = { "biome" },
-		markdown = { "biome" },
-		graphql = { "biome" },
-	},
+  formatters_by_ft = {
+    sh = { "shfmt" },
+    lua = { "stylua" },
+    toml = { "taplo" },
+    yaml = { "yamlfmt" },
+    yml = { "yamlfmt" },
+    astro = { "biome" },
+    javascript = { "biome" },
+    javascriptreact = { "biome" },
+    typescript = { "biome" },
+    typescriptreact = { "biome" },
+    css = { "biome" },
+    html = { "biome" },
+    json = { "biome" },
+    jsonc = { "biome" },
+    markdown = { "biome" },
+    graphql = { "biome" },
+  },
+  default_format_opts = { lsp_fallback = true, async = false, timeout_ms = 500 },
 })
 
 wk.add({
-	{
-		"<leader>cf",
-		function()
-			require("conform").format({ lsp_fallback = true, async = false, timeout_ms = 500 })
-		end,
-		desc = "Format File",
-	},
+  { "<leader>cf", function() require("conform").format() end, desc = "Format File" },
 })
 
 -- =============================================================================
 -- file explorer
 require("oil").setup({
-	default_file_explorer = true,
-	delete_to_trash = true,
-	skip_confirm_for_simple_edits = true,
-	view_options = {
-		show_hidden = true,
-		is_always_hidden = function(name, _)
-			return name == ".git/"
-		end,
-	},
-	keymaps = {
-		["<ESC>"] = "actions.close",
-		["q"] = "actions.close",
-	},
+  default_file_explorer = true,
+  delete_to_trash = true,
+  skip_confirm_for_simple_edits = true,
+  view_options = {
+    show_hidden = true,
+    is_always_hidden = function(name, _) return name == ".git/" end,
+  },
+  keymaps = {
+    ["<ESC>"] = "actions.close",
+    ["q"] = "actions.close",
+  },
 })
 
 wk.add({
-	{ "-", "<CMD>Oil<CR>", desc = "Edit Files (Oil)" },
+  { "-", "<CMD>Oil<CR>", desc = "Edit Files (Oil)" },
+})
+
+-- =============================================================================
+-- find
+require("fzf-lua").setup({
+  winopts = { split = "belowright new" },
 })
 
 wk.add({
-	{ "<leader>f", group = "Find" }, -- Grouping for your fzf-lua
-	{ "<leader>ff", "<CMD>FzfLua files<CR>", desc = "Find Files" },
-	{ "<leader>fg", "<CMD>FzfLua live_grep<CR>", desc = "Grep Text" },
+  { "<leader>f", group = "Find" }, -- Grouping for your fzf-lua
+  { "<leader>ff", "<CMD>FzfLua files<CR>", desc = "Find Files" },
+  { "<leader>fg", "<CMD>FzfLua live_grep<CR>", desc = "Grep Text" },
+  { "<leader><space>", "<CMD>FzfLua buffers<CR>", desc = "Opened Buffers" },
 })
 
 -- =============================================================================
 -- git
 require("gitsigns").setup({
-	signs = {
-		add = { text = "│" },
-		change = { text = "│" },
-		delete = { text = "│" },
-		topdelete = { text = "│" },
-		changedelete = { text = "│" },
-		untracked = { text = "┆" },
-	},
+  signs = {
+    add = { text = "│" },
+    change = { text = "│" },
+    delete = { text = "│" },
+    topdelete = { text = "│" },
+    changedelete = { text = "│" },
+    untracked = { text = "┆" },
+  },
 })
 
 wk.add({
-	{ "<leader>g", group = "Git" },
-	{ "<leader>gs", "<CMD>Gitsigns stage_hunk<CR>", desc = "Stage Hunk" },
-	{ "<leader>gr", "<CMD>Gitsigns reset_hunk<CR>", desc = "Reset Hunk" },
-	{ "<leader>gp", "<CMD>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" },
-	{ "<leader>gb", "<CMD>Gitsigns blame_line --full'<CR>", desc = "Blame Line" },
+  { "<leader>g", group = "Git" },
+  { "<leader>gs", "<CMD>Gitsigns stage_hunk<CR>", desc = "Stage Hunk" },
+  { "<leader>gr", "<CMD>Gitsigns reset_hunk<CR>", desc = "Reset Hunk" },
+  { "<leader>gp", "<CMD>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" },
+  { "<leader>gb", "<CMD>Gitsigns blame_line --full'<CR>", desc = "Blame Line" },
 })
 
 require("nvim-treesitter.config").setup({
-	install_dir = vim.fn.stdpath("data") .. "/site",
-	ensure_installed = {
-		"astro",
-		"javascript",
-		"typescript",
-		"tsx",
-		"html",
-		"css",
-		"json",
-		"lua",
-		"go",
-		"php",
-		"bash",
-		"yaml",
-		"toml",
-	},
-	sync_install = false,
-	highlight = { enable = true, additional_vim_regex_highlighting = false },
-	indent = { enable = true },
-	autotag = { enable = true },
+  install_dir = vim.fn.stdpath("data") .. "/site",
+  ensure_installed = { "astro", "javascript", "typescript", "tsx", "html", "css", "json", "lua", "toml" },
+  sync_install = false,
+  highlight = { enable = true, additional_vim_regex_highlighting = false },
+  indent = { enable = true },
+  autotag = { enable = true },
 })
 
--- ===========================================================================
---
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "<filetype>" },
-	callback = function()
-		vim.treesitter.start()
-	end,
+  pattern = { "<filetype>" },
+  callback = function() vim.treesitter.start() end,
 })
 
 -- ===========================================================================
@@ -331,52 +286,52 @@ require("nvim-ts-autotag").setup({})
 -- ===========================================================================
 --
 wk.add({
-	{ "<leader>c", group = "Code" },
-	{ "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" } },
-	{ "<leader>cr", vim.lsp.buf.rename, desc = "Rename Symbol" },
-	{ "gd", vim.lsp.buf.definition, desc = "Go to Definition" },
-	{ "gr", vim.lsp.buf.references, desc = "Show References" },
-	{ "K", vim.lsp.buf.hover, desc = "Hover Docs" },
+  { "<leader>c", group = "Code" },
+  { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" } },
+  { "<leader>cr", vim.lsp.buf.rename, desc = "Rename Symbol" },
+  { "gd", vim.lsp.buf.definition, desc = "Go to Definition" },
+  { "gr", vim.lsp.buf.references, desc = "Show References" },
+  { "K", vim.lsp.buf.hover, desc = "Hover Docs" },
 })
 
 -- ===========================================================================
 --
 require("nvim-autopairs").setup({
-	check_ts = true,
-	fast_wrap = {},
+  check_ts = true,
+  fast_wrap = {},
 })
 
 -- ===========================================================================
 --
 require("ibl").setup({
-	indent = {
-		char = "│",
-		tab_char = "│",
-		highlight = "IblIndent",
-	},
+  indent = {
+    char = "│",
+    tab_char = "│",
+    highlight = "IblIndent",
+  },
 })
 
 -- ===========================================================================
 -- Searc and replace in project files
 require("grug-far").setup({
-	headerMaxWidth = 80,
-	showCompactInputs = true,
+  headerMaxWidth = 80,
+  showCompactInputs = true,
 })
 
 wk.add({
-	{ "<leader>r", group = "Replace" },
-	{
-		"<leader>ra",
-		function()
-			local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
-			require("grug-far").open({
-				transient = true,
-				prefills = { filesFilter = ext and ext ~= "" and "*." .. ext or nil },
-			})
-		end,
-		desc = "Replace in projec",
-		mode = { "n", "v" },
-	},
+  { "<leader>r", group = "Replace" },
+  {
+    "<leader>ra",
+    function()
+      local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+      require("grug-far").open({
+        transient = true,
+        prefills = { filesFilter = ext and ext ~= "" and "*." .. ext or nil },
+      })
+    end,
+    desc = "Replace in projec",
+    mode = { "n", "v" },
+  },
 })
 
 -- ===========================================================================
@@ -446,12 +401,7 @@ vim.keymap.set("v", "p", '"_dP', { desc = "Paste (no yank)" })
 vim.keymap.set("n", "YY", "va{Vy", { desc = "Yank Block {}" })
 
 -- Split line (opposite of J)
-vim.keymap.set(
-	"n",
-	"X",
-	":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==^<cr>",
-	{ desc = "Split Line", silent = true }
-)
+vim.keymap.set("n", "X", ":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==^<cr>", { desc = "Split Line", silent = true })
 
 -- Select all
 vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select All" })
@@ -466,3 +416,5 @@ vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go Left" })
 vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go Down" })
 vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go Up" })
 vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go Right" })
+
+-- require("statusbar")
