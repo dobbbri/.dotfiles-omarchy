@@ -2,17 +2,18 @@ local wk = require("which-key")
 wk.setup()
 
 wk.add({
+  { "-", "<CMD>Oil<CR>", desc = "Edit Files (Oil)" },
+
   { "gd", vim.lsp.buf.definition, desc = "Go to Definition" },
   { "gr", vim.lsp.buf.references, desc = "Show References" },
   { "K", vim.lsp.buf.hover, desc = "Hover Docs" },
-  { "-", "<CMD>Oil<CR>", desc = "Edit Files (Oil)" },
 
   { "<leader>d", group = "Diagnostics" },
   { "<leader>dl", vim.diagnostic.setloclist, desc = "List Diagnostics" },
   { "<leader>df", vim.diagnostic.open_float, desc = "Float Error" },
 
   { "<leader>c", group = "Code" },
-  { "<leader>cf", function() require("conform").format() end, desc = "Format File" },
+  { "<leader>cf", "<CMD>format<CR>", desc = "Format File" },
   { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" } },
   { "<leader>cr", vim.lsp.buf.rename, desc = "Rename Symbol" },
 
@@ -33,8 +34,8 @@ wk.add({
 
   { "<leader>?", "<CMD>WhichKey<CR>", desc = "Show all keymaps" },
 
-  { "<leader>x", "<cmd>bd<CR>", desc = "Close current buffer" },
-  { "<leader>X", "<cmd>%bd<cr>", desc = "Close all buffers" },
+  { "<leader>x", "<CMD>bd<CR>", desc = "Close current buffer" },
+  { "<leader>X", "<CMD>%bd<CR>", desc = "Close all buffers" },
 
   { "<leader>q", "<CMD>q<CR>", desc = "Quit" },
   { "<leader>Q", "<CMD>qa<CR>", desc = "Quit All" },
