@@ -1,3 +1,9 @@
+-- =============================================================================
+-- colorscheme
+vim.cmd("colorscheme catppuccin")
+-- vim.cmd("colorscheme retrobox")
+-- vim.cmd("colorscheme unokai")
+
 -- ============================================================================
 -- Leader Keys
 vim.g.mapleader = " " -- Set space as the leader key for custom mappings
@@ -111,21 +117,14 @@ vim.pack.add({
   "https://github.com/windwp/nvim-autopairs",
   "https://github.com/MagicDuck/grug-far.nvim",
   "https://github.com/lukas-reineke/indent-blankline.nvim",
-  "https://github.com/3rd/image.nvim"
+  "https://github.com/3rd/image.nvim",
+  "https://github.com/mg979/vim-visual-multi",
 })
-
--- =============================================================================
--- colorscheme
-vim.cmd("colorscheme catppuccin")
--- vim.cmd("colorscheme retrobox")
--- vim.cmd("colorscheme unokai")
-
-
 
 -- =============================================================================
 -- image
 require("image").setup({
-  backend = "kitty"
+  backend = "kitty",
 })
 
 -- =============================================================================
@@ -351,15 +350,15 @@ vim.keymap.set("n", "<leader>x", "<CMD>bdelete<CR>", { desc = "Close Buffer" })
 vim.keymap.set("n", "<leader>?", "<CMD>WhichKey<CR>", { desc = "Show all keymaps" })
 
 -- Save
-vim.keymap.set("n", "<C-s>", "<cmd>w<cr>", { desc = "Save File" })
-vim.keymap.set({ "i", "x" }, "<C-s>", "<Esc><cmd>w<cr>", { desc = "Save File" })
+vim.keymap.set("n", "<C-s>", "<CMD>w<CR>", { desc = "Save File" })
+vim.keymap.set({ "i", "x" }, "<C-s>", "<Esc><CMD>w<CR>", { desc = "Save File" })
 
 -- Quit
-vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
-vim.keymap.set("n", "<leader>Q", "<cmd>qa<cr>", { desc = "Quit All" })
+vim.keymap.set("n", "<leader>q", "<CMD>q<CR>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>Q", "<CMD>qa<CR>", { desc = "Quit All" })
 
 -- Clear search highlight
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear Highlight", silent = true })
+vim.keymap.set("n", "<Esc>", "<CMD>nohlsearch<CR>", { desc = "Clear Highlight", silent = true })
 
 -- Window Navigation (no prefix for speed)
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go Left" })
@@ -368,10 +367,10 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go Up" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go Right" })
 
 -- Window resizing
-vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Height" })
-vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Height" })
-vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Width" })
-vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Width" })
+vim.keymap.set("n", "<C-Up>", "<CMD>resize +2<CR>", { desc = "Increase Height" })
+vim.keymap.set("n", "<C-Down>", "<CMD>resize -2<CR>", { desc = "Decrease Height" })
+vim.keymap.set("n", "<C-Left>", "<CMD>vertical resize -2<CR>", { desc = "Decrease Width" })
+vim.keymap.set("n", "<C-Right>", "<CMD>vertical resize +2<CR>", { desc = "Increase Width" })
 
 -- Line Movement (Visual Mode)
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Lines Down" })
@@ -393,10 +392,10 @@ vim.keymap.set("n", "*", "*zzzv", { desc = "Search Word (centered)" })
 vim.keymap.set("n", "#", "#zzzv", { desc = "Search Word Back (centered)" })
 
 -- Buffer navigation
-vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+vim.keymap.set("n", "<S-h>", "<CMD>bprevious<CR>", { desc = "Prev Buffer" })
+vim.keymap.set("n", "<S-l>", "<CMD>bnext<CR>", { desc = "Next Buffer" })
+vim.keymap.set("n", "[b", "<CMD>bprevious<CR>", { desc = "Prev Buffer" })
+vim.keymap.set("n", "]b", "<CMD>bnext<CR>", { desc = "Next Buffer" })
 
 -- Better Editing
 -- Better indenting (stay in visual mode)
@@ -410,7 +409,7 @@ vim.keymap.set("v", "p", '"_dP', { desc = "Paste (no yank)" })
 vim.keymap.set("n", "YY", "va{Vy", { desc = "Yank Block {}" })
 
 -- Split line (opposite of J)
-vim.keymap.set("n", "X", ":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==^<cr>", { desc = "Split Line", silent = true })
+vim.keymap.set("n", "X", ":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==^<CR>", { desc = "Split Line", silent = true })
 
 -- Select all
 vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select All" })
@@ -421,9 +420,7 @@ vim.keymap.set("i", "jk", "<Esc>", { desc = "Exit Insert" })
 
 -- Terminal Mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
-vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go Left" })
-vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go Down" })
-vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go Up" })
-vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go Right" })
-
--- require("statusbar")
+vim.keymap.set("t", "<C-h>", "<CMD>wincmd h<CR>", { desc = "Go Left" })
+vim.keymap.set("t", "<C-j>", "<CMD>wincmd j<CR>", { desc = "Go Down" })
+vim.keymap.set("t", "<C-k>", "<CMD>wincmd k<CR>", { desc = "Go Up" })
+vim.keymap.set("t", "<C-l>", "<CMD>wincmd l<CR>", { desc = "Go Right" })
