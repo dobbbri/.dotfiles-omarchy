@@ -46,16 +46,32 @@ vim.pack.add({
   "https://github.com/windwp/nvim-ts-autotag",
   "https://github.com/windwp/nvim-autopairs",
   "https://github.com/MagicDuck/grug-far.nvim",
-  "https://github.com/lukas-reineke/indent-blankline.nvim",
   "https://github.com/3rd/image.nvim",
+  "https://github.com/luukvbaal/statuscol.nvim",
   "https://github.com/mg979/vim-visual-multi",
-})
+}, { confirm = false })
 
 -- =============================================================================
 -- colorscheme
-vim.cmd("colorscheme catppuccin")
--- vim.cmd("colorscheme retrobox")
+-- vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme retrobox")
 -- vim.cmd("colorscheme unokai")
+
+-- =============================================================================
+-- Folds
+vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.wo.foldmethod = "expr"
+
+local builtin = require("statuscol.builtin")
+
+require("statuscol").setup({
+  relculright = true,
+  segments = {
+    { text = { builtin.foldfunc, "" }, click = "v:lua.ScFa" },
+    { text = { builtin.lnumfunc, "" }, click = "v:lua.ScLa" },
+    { text = { "%s" }, click = "v:lua.ScSa" },
+  },
+})
 
 -- =============================================================================
 -- file explorer
@@ -141,8 +157,8 @@ require("conform").setup({
     html = { "biome" },
     json = { "biome" },
     jsonc = { "biome" },
-    markdown = { "biome" },
-    graphql = { "biome" },
+    markdown = { "prettier" },
+    graphql = { "prettier" },
   },
   default_format_opts = { lsp_fallback = true, async = false, timeout_ms = 500 },
 })
@@ -204,13 +220,13 @@ require("nvim-autopairs").setup({
 
 -- ===========================================================================
 --
-require("ibl").setup({
-  indent = {
-    char = "│",
-    tab_char = "│",
-    highlight = "IblIndent",
-  },
-})
+-- require("ibl").setup({
+--   indent = {
+--     char = "│",
+--     tab_char = "│",
+--     highlight = "IblIndent",
+--   },
+-- })
 
 -- ===========================================================================
 -- Searc and replace in project files
@@ -220,11 +236,9 @@ require("grug-far").setup({
 })
 
 -- =============================================================================
--- image
 require("image").setup({
   backend = "kitty",
 })
-
 
 -- =============================================================================
 -- which-key

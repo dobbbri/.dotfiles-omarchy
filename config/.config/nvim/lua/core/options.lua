@@ -33,10 +33,7 @@ vim.opt.ruler = true -- Show cursor position in command line
 vim.opt.showtabline = 0 -- Never show the tab line
 vim.opt.cmdheight = 1 -- Height of command line area
 vim.opt.pumheight = 10 -- Maximum height of popup menu
-vim.o.winborder = "none" -- Use rounded borders for floating windows
-vim.opt.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
-vim.opt.fillchars = { eob = "-" } -- Hide ~ characters on empty lines
+vim.opt.winborder = "none" -- Use rounded borders for floating windows
 
 -- Search
 vim.opt.hlsearch = true -- Highlight all search matches
@@ -63,3 +60,20 @@ vim.opt.swapfile = false -- Don't create swap files
 -- Completion
 vim.opt.completeopt = { "menu", "menuone", "noselect" } -- Completion menu options
 vim.opt.conceallevel = 0 -- Show all text normally (no concealment)
+
+-- folding - ufo
+vim.opt.foldcolumn = "1"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+
+-- vim.opt.statuscolumn = "%s %{v:relnum?v:relnum:v:lnum}"
+--
+vim.opt.list = false
+-- vim.opt.listchars = "eob:,tab:» ,nbsp:⍽,trail:·,extends:→,precedes:←"
+vim.opt.fillchars = {
+  foldopen = "󰅀", -- "",
+  foldclose = "󰅂", --"󰅂",-- "",--"",
+  foldsep = "│",
+}
+

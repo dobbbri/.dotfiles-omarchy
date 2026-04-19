@@ -13,7 +13,7 @@ wk.add({
   { "<leader>df", vim.diagnostic.open_float, desc = "Float Error" },
 
   { "<leader>c", group = "Code" },
-  { "<leader>cf", "<CMD>format<CR>", desc = "Format File" },
+  { "<leader>cf", "<CMD>Format<CR>", desc = "Format File" },
   { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" } },
   { "<leader>cr", vim.lsp.buf.rename, desc = "Rename Symbol" },
 
