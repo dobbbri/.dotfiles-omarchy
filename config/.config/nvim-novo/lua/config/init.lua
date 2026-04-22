@@ -1,6 +1,0 @@
-require("config.autocmds")
-require("config.statusbar")
-require("config.keymaps")
-require("config.diagnostics")
-require("config.autocmds")
-require("config.terminal")

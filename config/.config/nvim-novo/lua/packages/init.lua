@@ -1,5 +1,0 @@
-require("packages.colorscheme")
-require("packages.treesitter")
-require("packages.lsp")
-require("packages.oil")
-require("packages.fzf-lua")
