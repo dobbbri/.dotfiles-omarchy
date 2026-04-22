@@ -1,15 +1,86 @@
 -- ============================================================================
--- Leader Keys
 vim.g.mapleader = " " -- Set space as the leader key for custom mappings
 vim.g.maplocalleader = " " -- Set space as the local leader key for buffer-local mappings
 
-require("core.options")
+-- Disable Built-in Plugins
+vim.g.loaded_netrw = 1 -- Disable netrw file explorer (using a different file explorer)
+vim.g.loaded_netrwPlugin = 1 -- Disable netrw plugin component
 
--- disable enter
+-- Disable Providers (silence health check warnings)
+vim.g.loaded_node_provider = 0 -- Disable Node.js provider
+vim.g.loaded_perl_provider = 0 -- Disable Perl provider
+vim.g.loaded_python3_provider = 0 -- Disable Python 3 provider
+vim.g.loaded_ruby_provider = 0 -- Disable Ruby provider
+
+-- Editor Behavior
+vim.opt.mouse = "a" -- Enable mouse support in all modes
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard for all yank/paste operations
+vim.opt.undofile = true -- Persist undo history to disk between sessions
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undo" -- Directory to store undo files
+vim.opt.updatetime = 100 -- Time in ms before CursorHold event triggers (affects plugins)
+vim.opt.timeoutlen = 1000 -- Time in ms to wait for a mapped key sequence to complete
+vim.opt.confirm = true -- Prompt for confirmation instead of failing on unsaved changes
+vim.opt.autoread = true -- Automatically reload files changed outside of Neovim
+
+-- UI/Display
+vim.opt.termguicolors = true -- Enable 24-bit RGB colors in the terminal
+vim.opt.number = true -- Show absolute line numbers
+vim.opt.relativenumber = true -- Show relative line numbers (hybrid with number=true)
+vim.opt.numberwidth = 2 -- Minimum width of number column
+vim.opt.signcolumn = "yes" -- Always show sign column with width of 1
+vim.opt.cursorline = true -- Don't highlight the current line
+vim.opt.wrap = false -- Don't wrap long lines
+vim.opt.breakindent = false -- Wrapped lines preserve indentation
+vim.opt.showmode = false -- Don't show mode in command line (shown in statusline)
+vim.opt.showcmd = false -- Don't show partial command in command line
+vim.opt.ruler = true -- Show cursor position in command line
+vim.opt.showtabline = 0 -- Never show the tab line
+vim.opt.cmdheight = 1 -- Height of command line area
+vim.opt.pumheight = 10 -- Maximum height of popup menu
+vim.opt.winborder = "none" -- Use rounded borders for floating windows
+
+-- Search
+vim.opt.hlsearch = true -- Highlight all search matches
+vim.opt.incsearch = true -- Show search matches as you type
+vim.opt.ignorecase = true -- Ignore case in search patterns
+vim.opt.smartcase = true -- Override ignorecase if pattern contains uppercase
+
+-- Indentation
+vim.opt.expandtab = true -- Convert tabs to spaces
+vim.opt.tabstop = 2 -- Number of spaces tabs count for
+vim.opt.shiftwidth = 2 -- Number of spaces for each indentation level
+vim.opt.smartindent = true -- Auto-indent new lines based on syntax
+
+-- Splits
+vim.opt.splitbelow = true -- Open horizontal splits below current window
+vim.opt.splitright = true -- Open vertical splits to the right of current window
+
+-- Files
+vim.opt.fileencoding = "utf-8" -- File encoding for new files
+vim.opt.backup = false -- Don't create backup files before overwriting
+vim.opt.writebackup = false -- Don't create backup while editing
+vim.opt.swapfile = false -- Don't create swap files
+
+-- Completion
+vim.opt.completeopt = { "menu", "menuone", "noselect" } -- Completion menu options
+vim.opt.conceallevel = 0 -- Show all text normally (no concealment)
+
+-- folding
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldmethod = "expr"
+vim.opt.foldcolumn = "1"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+vim.opt.fillchars = {
+  foldopen = "󰅀", -- "",
+  foldclose = "󰅂", --"󰅂",-- "",--"",
+  foldsep = "│",
+}
+
 require("vim._core.ui2").enable()
 
 -- =============================================================================
--- go to last loc when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
     local mark = vim.api.nvim_buf_get_mark(0, '"')
@@ -21,7 +92,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- =============================================================================
--- Configure how diagnostics are displayed
 vim.diagnostic.config({
   virtual_text = { prefix = "●", spacing = 4 },
   float = { focusable = true, style = "minimal" },
@@ -52,29 +122,23 @@ vim.pack.add({
 }, { confirm = false })
 
 -- =============================================================================
--- colorscheme
--- vim.cmd("colorscheme catppuccin")
-vim.cmd("colorscheme retrobox")
+vim.cmd("colorscheme catppuccin")
+-- vim.cmd("colorscheme retrobox")
 -- vim.cmd("colorscheme unokai")
 
 -- =============================================================================
--- Folds
-vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.wo.foldmethod = "expr"
-
 local builtin = require("statuscol.builtin")
 
 require("statuscol").setup({
   relculright = true,
   segments = {
     { text = { builtin.foldfunc, "" }, click = "v:lua.ScFa" },
-    { text = { builtin.lnumfunc, "" }, click = "v:lua.ScLa" },
+    { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
     { text = { "%s" }, click = "v:lua.ScSa" },
   },
 })
 
 -- =============================================================================
--- file explorer
 require("oil").setup({
   default_file_explorer = true,
   delete_to_trash = true,
@@ -90,7 +154,6 @@ require("oil").setup({
 })
 
 -- =============================================================================
--- autocomplete
 require("blink.cmp").setup({
   fuzzy = {
     implementation = "prefer_rust",
@@ -111,7 +174,6 @@ require("blink.cmp").setup({
 })
 
 -- =============================================================================
--- LSP
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
@@ -212,24 +274,12 @@ vim.api.nvim_create_autocmd("FileType", {
 require("nvim-ts-autotag").setup({})
 
 -- ===========================================================================
---
 require("nvim-autopairs").setup({
   check_ts = true,
   fast_wrap = {},
 })
 
 -- ===========================================================================
---
--- require("ibl").setup({
---   indent = {
---     char = "│",
---     tab_char = "│",
---     highlight = "IblIndent",
---   },
--- })
-
--- ===========================================================================
--- Searc and replace in project files
 require("grug-far").setup({
   headerMaxWidth = 80,
   showCompactInputs = true,
@@ -241,5 +291,83 @@ require("image").setup({
 })
 
 -- =============================================================================
--- which-key
-require("config.which-key")
+local wk = require("which-key")
+wk.setup()
+
+wk.add({
+  { "-", "<CMD>Oil<CR>", desc = "Edit Files (Oil)" },
+
+  { "gd", vim.lsp.buf.definition, desc = "Go to Definition" },
+  { "gr", vim.lsp.buf.references, desc = "Show References" },
+  { "K", vim.lsp.buf.hover, desc = "Hover Docs" },
+
+  { "<leader>d", group = "Diagnostics" },
+  { "<leader>dl", vim.diagnostic.setloclist, desc = "List Diagnostics" },
+  { "<leader>df", vim.diagnostic.open_float, desc = "Float Error" },
+
+  { "<leader>c", group = "Code" },
+  { "<leader>cf", "<CMD>Format<CR>", desc = "Format File" },
+  { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" } },
+  { "<leader>cr", vim.lsp.buf.rename, desc = "Rename Symbol" },
+
+  { "<leader>f", group = "Find" }, -- Grouping for your fzf-lua
+  { "<leader>ff", "<CMD>FzfLua files<CR>", desc = "Find Files" },
+  { "<leader>fg", "<CMD>FzfLua live_grep<CR>", desc = "Grep Text" },
+  { "<leader><space>", "<CMD>FzfLua buffers<CR>", desc = "Opened Buffers" },
+
+  { "<leader>g", group = "Git" },
+  { "<leader>gs", "<CMD>Gitsigns stage_hunk<CR>", desc = "Stage Hunk" },
+  { "<leader>gr", "<CMD>Gitsigns reset_hunk<CR>", desc = "Reset Hunk" },
+  { "<leader>gp", "<CMD>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" },
+  { "<leader>gb", "<CMD>Gitsigns blame_line --full'<CR>", desc = "Blame Line" },
+
+  { "<leader>r", group = "Replace" },
+  { "<leader>ra", "<CMD>GrugFar<CR>", desc = "Replace in projec", mode = { "n", "v" } },
+  { "<leader>rr", ":%s///gcI<Left><Left><Left><Left><Left>", desc = "replace in current buffer" },
+
+  { "<leader>?", "<CMD>WhichKey<CR>", desc = "Show all keymaps" },
+
+  { "<leader>x", "<CMD>bd<CR>", desc = "Close current buffer" },
+  { "<leader>X", "<CMD>%bd<CR>", desc = "Close all buffers" },
+
+  { "<leader>q", "<CMD>q<CR>", desc = "Quit" },
+  { "<leader>Q", "<CMD>qa<CR>", desc = "Quit All" },
+
+  { "<Esc>", "<CMD>nohlsearch<CR>", desc = "Clear Highlight", silent = true },
+
+  { "<C-h>", "<C-w>h", desc = "Go Left" },
+  { "<C-j>", "<C-w>j", desc = "Go Down" },
+  { "<C-k>", "<C-w>k", desc = "Go Up" },
+  { "<C-l>", "<C-w>l", desc = "Go Right" },
+
+  { "<C-Up>", "<CMD>resize +2<CR>", desc = "Increase Height" },
+  { "<C-Down>", "<CMD>resize -2<CR>", desc = "Decrease Height" },
+  { "<C-Left>", "<CMD>vertical resize -2<CR>", desc = "Decrease Width" },
+  { "<C-Right>", "<CMD>vertical resize +2<CR>", desc = "Increase Width" },
+
+  { "J", ":m '>+1<CR>gv=gv", desc = "Move Lines Down", mode = "v" },
+  { "K", ":m '<-2<CR>gv=gv", desc = "Move Lines Up", mode = "v" },
+  { "k", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up (wrapped)" },
+  { "j", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down (wrapped)" },
+
+  { "H", "^", desc = "Start of Line", mode = { "n", "x", "o" } },
+  { "L", "g_", desc = "End of Line", mode = { "n", "x", "o" } },
+
+  { "<Tab>", "<CMD>bprevious<CR>", desc = "Prev Buffer" },
+  { "<S-Tab>", "<CMD>bnext<CR>", desc = "Next Buffer" },
+
+  { "YY", "va{Vy", desc = "Yank Block {}" },
+  { "<C-a>", "ggVG", desc = "Select All" },
+
+  { "<", "<gv", desc = "Indent Left", mode = "v" },
+  { ">", ">gv", desc = "Indent Right", mode = "v" },
+
+  { "p", '"_dP', desc = "Paste (no yank)", mode = "v" },
+
+  { "<Esc><Esc>", "<C-\\><C-n>", desc = "Exit Terminal Mode", mode = "t" },
+  { "<C-h>", "<CMD>wincmd h<CR>", desc = "Go Left", mode = "t" },
+  { "<C-j>", "<CMD>wincmd j<CR>", desc = "Go Down", mode = "t" },
+  { "<C-k>", "<CMD>wincmd k<CR>", desc = "Go Up", mode = "t" },
+  { "<C-l>", "<CMD>wincmd l<CR>", desc = "Go Right", mode = "t" },
+})
+
