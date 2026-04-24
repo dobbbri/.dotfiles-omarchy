@@ -122,9 +122,9 @@ vim.pack.add({
 }, { confirm = false })
 
 -- =============================================================================
-vim.cmd("colorscheme catppuccin")
+-- vim.cmd("colorscheme catppuccin")
 -- vim.cmd("colorscheme retrobox")
--- vim.cmd("colorscheme unokai")
+vim.cmd("colorscheme unokai")
 
 -- =============================================================================
 local builtin = require("statuscol.builtin")
